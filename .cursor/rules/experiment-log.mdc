@@ -1,0 +1,18 @@
+---
+description: Mantener registro_experimentos.md actualizado en cada prueba
+alwaysApply: true
+---
+
+# Bitácora de experimentos
+
+El archivo `registro_experimentos.md` documenta qué se probó y cómo evolucionó el TP.
+Es **local** (está en `.gitignore`); no trackearlo ni proponer subirlo a GitHub.
+
+## Obligatorio
+
+- Después de cada experimento o cambio relevante de enfoque/parámetros/resultados del ítem en curso, **actualizar** `registro_experimentos.md`.
+- En el notebook, **después de cada experimento**, agregar una celda markdown con la **lectura de resultados** en lenguaje simple (qué funcionó, qué falló y por qué, sin jerga innecesaria).
+- Registrar: objetivo, parámetros, tabla de resultados (si aplica), observaciones cualitativas y conclusión breve.
+- No borrar entradas anteriores: agregar nuevas secciones (`Experimento X.Y`) para que el reporte final pueda reconstruir la evolución.
+- No implementar código solo para “rellenar” la bitácora; la bitácora sigue a lo que el usuario pide probar.
+- No commitear `registro_experimentos.md`.

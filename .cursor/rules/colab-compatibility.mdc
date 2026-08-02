@@ -1,0 +1,45 @@
+---
+description: Todo el código del TP debe ejecutarse en Google Colab
+alwaysApply: true
+---
+
+# Compatibilidad con Google Colab
+
+Este TP se entrega y se ejecuta en **Google Colab**. Todo el código debe correr ahí sin depender de un entorno local.
+
+## Obligatorio
+
+- Preferir el notebook `DVxC-VxCI-TP3.ipynb` como entregable principal.
+- Usar librerías disponibles en Colab (`numpy`, `opencv-python`, `matplotlib`, `scikit-image`, etc.) o instalarlas en una celda con `!pip install ...` / `%pip install ...`.
+- No asumir rutas absolutas del sistema local (`/Users/...`, `C:\...`).
+- Para archivos de datos/imágenes: usar rutas relativas al notebook, descarga desde URL, o montaje de Drive solo si es necesario y documentado.
+- Evitar GUIs nativas (`cv2.imshow`, ventanas Tkinter). Usar `matplotlib` / `cv2_imshow` de Colab.
+- Mantener el badge "Open in Colab" al inicio del notebook.
+
+## Evitar
+
+```python
+# ❌ BAD — depende del entorno local
+cv2.imshow("img", frame)
+cv2.waitKey(0)
+
+img = cv2.imread("/Users/me/Desktop/foto.jpg")
+```
+
+```python
+# ✅ GOOD — compatible con Colab
+from google.colab.patches import cv2_imshow
+import matplotlib.pyplot as plt
+
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis("off")
+plt.show()
+
+# o descarga / ruta relativa
+!wget -q -O imagen.jpg "https://..."
+img = cv2.imread("imagen.jpg")
+```
+
+## Criterio de aceptación
+
+Antes de dar por cerrado un cambio: el código debe poder ejecutarse de punta a punta en una sesión limpia de Colab (Runtime → Restart session).

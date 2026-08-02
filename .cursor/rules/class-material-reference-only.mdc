@@ -1,0 +1,74 @@
+---
+description: Referencia Clase4 — opciones técnicas y trade-offs para el TP3
+alwaysApply: true
+---
+
+# Referencia: Clase 4 (Template Matching y afines)
+
+Fuente local: `Clase4.pdf` (no trackear en Git). Usar para discutir enfoques con pros/contras antes de implementar.
+
+## Objetivo del TP (recordatorio)
+
+Detectar el logo de gaseosa con un template fijo; 1 detección/imagen sin FP; múltiples en `coca_multi.png`; generalizar; BBs + confianza.
+
+## Enfoque central de la clase: Template Matching
+
+Alineado directamente con el enunciado. Busca regiones que maximizan similitud con el template.
+
+**Restricciones vistas en clase:** solo invariante a desplazamiento; escala requiere procesamiento extra; la métrica condiciona la calidad.
+
+### Métricas (OpenCV)
+
+| Métrica | Idea | Ventajas | Desventajas / cuidados |
+|---|---|---|---|
+| SQDIFF / SQDIFF_NORMED | Minimizar diferencias | Intuitiva | Zonas oscuras pueden engañar (clase) |
+| CCORR / CCORR_NORMED | Maximizar correlación | Rápida / dominio frec. | Sin normalizar: FP en zonas muy brillantes |
+| CCOEFF / CCOEFF_NORMED | Correlación centrada | Mejor discriminación; umbral 0–1 = “confianza” | Sigue sensible a rotación/apariencia muy distinta |
+
+**Recomendación de clase:** métricas **normalizadas** → umbrales de confianza en [0, 1] para múltiples objetos. Explorar cuál métrica conviene (análisis exploratorio).
+
+### Post-procesado (imprescindible)
+
+- Localizar picos: `cv.minMaxLoc`, `np.where`
+- Filtrar solapes: **NMS / IoU** (clase lo pide explícitamente)
+- Preprocesar para reducir info a correlacionar: **Canny**, **pirámides**, etc.
+
+## Pirámides de imagen
+
+Útiles cuando el logo aparece a **distintas escalas** (probable en el set: logos, retros, multi).
+
+| Ventajas | Desventajas |
+|---|---|
+| Invarianza aproximada a escala sin muchos templates | Más costo (varios niveles) |
+| Acelera: buscar en baja res y refinar | Hay que mapear coordenadas entre niveles |
+| Encaja con “requiere procesamiento adicional para escala” | No cubre rotación fuerte ni deformación |
+
+## Características locales (Harris / Shi-Tomasi) + matching
+
+Proceso: detección → descripción → correspondencia. Menos “directo” que TM para este TP, pero opción si TM falla por apariencia.
+
+| Ventajas | Desventajas |
+|---|---|
+| Más robusto a cambios locales / oclusión parcial | Pipeline más complejo (descriptores, matching, homografía) |
+| Shi-Tomasi / NMS adaptativa mejoran densidad de puntos | Puede ser overkill si TM + pirámides alcanza |
+| Bueno para alineación / pose | Confianza y BBs hay que derivarlos (inliers, etc.) |
+
+## Hough (líneas / círculos)
+
+Visto en clase, pero **poco alineado** al logo tipográfico salvo que se busquen formas geométricas auxiliares.
+
+| Pros (clase) | Cons (clase) |
+|---|---|
+| Oclusión, ruido, varias instancias | Complejidad con # parámetros; picos espurios; cuantización de bins |
+
+Para este TP: solo considerar si un enfoque por bordes/formas aporta; no es el camino natural del enunciado.
+
+## Mapeo sugerido por ítem del TP
+
+1. **Una detección / imagen, sin FP:** TM + métrica normalizada + umbral estricto + (si hace falta) preproc (gris/Canny) y/o pirámide; tomar el mejor pico sobre umbral.
+2. **Múltiples en `coca_multi.png`:** misma métrica; umbral de confianza; **NMS** para no duplicar; posiblemente multi-escala si los logos varían de tamaño.
+3. **Generalizar a todas:** unificar pipeline (misma métrica, umbrales, pirámide, NMS); ajustar para evitar FP del ítem 1 y no perder multi del ítem 2.
+
+## Criterio de trabajo
+
+Al discutir o implementar una parte: contrastar opciones con esta tabla; preferir lo alineado a la clase (TM + normalización + postproc + pirámides) salvo que el usuario pida otra vía.

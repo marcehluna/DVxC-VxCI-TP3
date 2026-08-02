@@ -1,0 +1,37 @@
+---
+description: Notebook y comentarios en español; cada celda con intro
+alwaysApply: true
+globs: **/*.ipynb
+---
+
+# Idioma y estructura de celdas
+
+El notebook del TP debe estar **en español**, incluido el código comentado.
+
+## Obligatorio
+
+- Markdown, títulos, explicaciones y conclusiones: en español, con redacción **impersonal** (p. ej. “Se implementó…”, no “Implementamos…”).
+- Comentarios en el código: en español.
+- Nombres de variables/funciones: pueden quedar en inglés si mejora claridad técnica; el texto narrativo y los comentarios, en español.
+- **Antes de cada celda de código** (o al inicio de la misma sección): una celda markdown breve que explique qué se va a implementar.
+- Esa introducción debe ser **concisa pero clara**: 1–3 oraciones, sin relleno.
+
+## Estructura esperada
+
+```markdown
+## Carga de imagen
+
+Leemos la imagen de entrada y la convertimos a escala de grises para el procesamiento posterior.
+```
+
+```python
+# Cargar imagen y convertir a gris
+img = cv2.imread("imagen.jpg")
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+```
+
+## Evitar
+
+- Celdas de código sin introducción previa.
+- Comentarios o markdown en inglés (salvo nombres técnicos inevitables: OpenCV, Canny, etc.).
+- Introducciones largas o repetitivas del enunciado.

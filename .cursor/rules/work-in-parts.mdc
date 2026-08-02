@@ -1,0 +1,20 @@
+---
+description: No implementar hasta que el usuario pida cada parte
+alwaysApply: true
+---
+
+# Trabajo por partes — no adelantarse
+
+El usuario entrega el enunciado como contexto, pero **no** se debe implementar la solución de una vez.
+
+## Obligatorio
+
+- Al recibir el enunciado: solo leer, entender y (si se pide) aclarar o planificar. **No escribir código ni armar el notebook** hasta que lo indiquen.
+- Implementar **únicamente** lo que el usuario pida en cada mensaje.
+- No adelantar puntos siguientes, refactors no pedidos ni “completar el resto” del TP.
+- Si algo del pedido actual depende de una parte aún no pedida, avisar y preguntar cómo proceder.
+
+## Al recibir el enunciado
+
+Respuestas válidas: resumen, dudas, desglose de pasos, o confirmación de que quedó registrado.  
+No válido: empezar a codear el TP sin pedido explícito.
